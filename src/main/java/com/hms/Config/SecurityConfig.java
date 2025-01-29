@@ -9,11 +9,11 @@ import org.springframework.security.web.access.intercept.AuthorizationFilter;
 @Configuration
 public class SecurityConfig {
 
-//    private JWTFilter jwtFilter;
-//
-//    public SecurityConfig(JWTFilter jwtFilter) {
-//        this.jwtFilter = jwtFilter;
-//    }
+    private JWTFilter jwtFilter;
+
+    public SecurityConfig(JWTFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
     @Bean
     public SecurityFilterChain  securityFilterChain(
@@ -22,7 +22,7 @@ public class SecurityConfig {
     {
         //h(cd)2
         http.csrf().disable().cors().disable();
-        //http.addFilterBefore(jwtFilter, AuthorizationFilter.class);
+        http.addFilterBefore(jwtFilter, AuthorizationFilter.class);
         //haap
         http.authorizeHttpRequests().anyRequest().permitAll();
 //       http.authorizeHttpRequests().
