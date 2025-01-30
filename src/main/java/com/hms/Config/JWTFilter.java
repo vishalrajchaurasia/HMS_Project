@@ -43,14 +43,14 @@ public class JWTFilter extends OncePerRequestFilter {
             String username = jwtService.getUsername(tokenVal);
             Optional<AppUser> opUsername = userRepository.findByUsername(username);
             if(opUsername.isPresent()){
-//                AppUser appUser = opUsername.get();
-//                UsernamePasswordAuthenticationToken
-//                        authenticationToken =
-//                        new UsernamePasswordAuthenticationToken(appUser,null, Collections.singleton(new SimpleGrantedAuthority(appUser.getRole())));
-//
-//                authenticationToken.setDetails(new WebAuthenticationDetails(request));
-//
-//                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                AppUser appUser = opUsername.get();
+                UsernamePasswordAuthenticationToken
+                        authenticationToken =
+                        new UsernamePasswordAuthenticationToken(appUser,null, Collections.singleton(new SimpleGrantedAuthority(appUser.getRole())));
+
+                authenticationToken.setDetails(new WebAuthenticationDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
             }
         }
