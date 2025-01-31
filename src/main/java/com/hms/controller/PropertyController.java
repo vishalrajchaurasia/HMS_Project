@@ -1,6 +1,7 @@
 package com.hms.controller;
 
 import com.hms.entity.Property;
+import com.hms.repository.PropertyRepository;
 import com.hms.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,28 +14,28 @@ import java.util.Optional;
 @RequestMapping("/api/properties")
 public class PropertyController {
 
-    @Autowired
+
     private PropertyService propertyService;
 
-    @GetMapping
-    public List<Property> getAllProperties() {
-        return propertyService.getAllProperties();
+    private PropertyRepository propertyRepository;
+
+    public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository) {
+        this.propertyService = propertyService;
+        this.propertyRepository = propertyRepository;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Property> getPropertyById(@PathVariable Long id) {
-        Optional<Property> property = propertyService.getPropertyById(id);
-        return property.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+    @GetMapping("/search-hotels")
+    public List<Property> searchHotels(
+            @RequestParam String name
 
+    ){
+        List<Property> properties = propertyRepository.searchHotels(name);
+        return properties;
+    }
     @PostMapping
     public Property createProperty(@RequestBody Property property) {
         return propertyService.saveProperty(property);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProperty(@PathVariable Long id) {
-        propertyService.deleteProperty(id);
-        return ResponseEntity.noContent().build();
-    }
+
 }
