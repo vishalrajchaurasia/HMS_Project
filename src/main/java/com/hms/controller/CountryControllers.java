@@ -13,6 +13,7 @@ public class CountryControllers {
     // http://localhost:8080/api/v1/country
     @PostMapping("/addCountry")
     public AppUser addCountry(
+
             @AuthenticationPrincipal AppUser user
     ){
         return user;
