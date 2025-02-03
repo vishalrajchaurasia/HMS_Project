@@ -21,6 +21,9 @@ public class UserService {
 
     public String verifyLogin(LoginDto dto){
         Optional<AppUser> opUser = appUserRepository.findByUsername(dto.getUsername());
+       // Optional<AppUser> opUser =  appUserRepository.findByMobile();
+
+
         if(opUser.isPresent()){
             AppUser appUser = opUser.get();
             if(BCrypt.checkpw(dto.getPassword(),appUser.getPassword())){

@@ -5,6 +5,7 @@ import com.hms.entity.AppUser;
 import com.hms.payload.LoginDto;
 import com.hms.payload.TokenDto;
 import com.hms.repository.AppUserRepository;
+import com.hms.service.OTPService;
 import com.hms.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,13 @@ public class UserController {
     private AppUserRepository appUserRepository;
 
     private UserService userService;
+    private OTPService otpService;
 
 
-    public UserController(AppUserRepository appUserRepository,UserService userService) {
+    public UserController(AppUserRepository appUserRepository, UserService userService, OTPService otpService) {
         this.appUserRepository = appUserRepository;
         this.userService=userService;
+        this.otpService = otpService;
     }
 
     @PostMapping("/signup")
@@ -94,5 +97,21 @@ public class UserController {
         user.setRole("ROLE_OWNER");
         AppUser savedUser = appUserRepository.save(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/generate-login-otp")
+    public String login(@RequestParam String mobileNumber){
+         otpService.generateAndSendOTP(mobileNumber);
+         return "Otp Generated";
+    }
+
+    @PostMapping("/validate-otp-login")
+    public String validateOTP(@RequestParam String mobileNumber, @RequestParam String otp){
+        boolean isValid=otpService.validateOTP(mobileNumber,otp);
+        if(isValid){
+            return "Login Successful!";
+        }else{
+            return "Invalid or exprired OTP!";
+        }
     }
 }
