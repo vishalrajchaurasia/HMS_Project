@@ -27,6 +27,17 @@ public class Room {
 
     private double perNightPrice;
 
+    @Version
+    private long versions;
+
+    public long getVersions() {
+        return versions;
+    }
+
+    public void setVersions(long versions) {
+        this.versions = versions;
+    }
+
     public Long getId() {
         return id;
     }
